@@ -5,6 +5,8 @@ import 'package:flutter_app/utils/Constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:contactica_app/page/OnboardingScreen.dart';
+import 'package:contactica_app/page/ResetPasswordPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => null),
+              MaterialPageRoute(builder: (context) => ResetPasswordPage()),
             );
           },
           child: new Container(
@@ -101,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => null),
+            MaterialPageRoute(builder: (context) =>  OnboardingScreen()),
           );
         },
         child: new Container(
