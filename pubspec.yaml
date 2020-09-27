@@ -30,6 +30,13 @@ dependencies:
   shared_preferences: any
   fluttertoast: ^3.1.0
   http: any
+  email_validator: ^1.0.0
+  input_sheet: any
+  flutter_email_sender: ^3.0.1
+  alertify: ^0.0.2
+  popup_menu: ^1.0.1
+  image_picker: any
+  geolocator: ^5.3.1
 
 dev_dependencies:
   flutter_test:

@@ -5,8 +5,9 @@ import 'package:flutter_app/utils/Constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:contactica_app/page/OnboardingScreen.dart';
-import 'package:contactica_app/page/ResetPasswordPage.dart';
+import 'RegistrationPage.dart';
+import 'OnboardingScreen.dart';
+import 'ResetPasswordPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -31,8 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -50,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Username",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
     final passwordField = TextField(
@@ -61,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
     final loginButon = Material(
@@ -81,29 +80,29 @@ class _LoginPageState extends State<LoginPage> {
 
     final forgotPasswordButon = Material(
         child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ResetPasswordPage()),
-            );
-          },
-          child: new Container(
-              alignment: Alignment.center,
-              height: 20.0,
-              color: Colors.white,
-              child: new Text("Forgot Password?",
-                  style: new TextStyle(
-                      fontSize: 17.0,
-                      background: Paint()..color = Colors.white,
-                      color: Colors.redAccent))),
-        ));
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ResetPasswordPage()),
+        );
+      },
+      child: new Container(
+          alignment: Alignment.center,
+          height: 20.0,
+          color: Colors.white,
+          child: new Text("Forgot Password?",
+              style: new TextStyle(
+                  fontSize: 17.0,
+                  background: Paint()..color = Colors.white,
+                  color: Colors.redAccent))),
+    ));
 
     final createNewAccount = Material(
       child: GestureDetector(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  OnboardingScreen()),
+            MaterialPageRoute(builder: (context) => OnboardingScreen()),
           );
         },
         child: new Container(
@@ -172,7 +171,6 @@ class _LoginPageState extends State<LoginPage> {
     var passCode = _passwordController.text;
 
     if (userName.length > 0 && passCode.length > 0) {
-
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -234,7 +232,6 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => null),
       );
     } else {
-
       Navigator.of(context).pop();
 
       Fluttertoast.showToast(

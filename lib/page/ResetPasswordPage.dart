@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:alertify/alertify.dart';
-import 'package:contactica_app/utils/Constants.dart';
+import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:popup_menu/popup_menu.dart';
