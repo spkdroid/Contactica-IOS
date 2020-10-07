@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/page/MenuPage.dart';
 import 'package:flutter_app/utils/Constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -229,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => null),
+        MaterialPageRoute(builder: (context) => MenuPage()),
       );
     } else {
       Navigator.of(context).pop();

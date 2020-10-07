@@ -17,7 +17,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'AddItemPage.dart';
-// import 'ServicePage.dart';
+import 'ServicePage.dart';
 
 class MenuPage extends StatefulWidget {
   MenuPage({Key key, this.title}) : super(key: key);
@@ -348,10 +348,10 @@ class _MenuPageState extends State<MenuPage> {
     prefs.setString("lat", position.latitude.toString());
     prefs.setString("long", position.longitude.toString());
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ServicePage(title: s)),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ServicePage(title: s)),
+    );
   }
 
   Future getCredential() async {
