@@ -37,6 +37,7 @@ dependencies:
   popup_menu: ^1.0.1
   image_picker: any
   geolocator: ^5.3.1
+  url_launcher: any
 
 dev_dependencies:
   flutter_test:
