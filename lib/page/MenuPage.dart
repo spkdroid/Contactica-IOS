@@ -17,6 +17,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'AddItemPage.dart';
+import 'KeywordServicePage.dart';
 import 'PromoPage.dart';
 import 'ServicePage.dart';
 
@@ -570,12 +571,12 @@ class _MenuPageState extends State<MenuPage> {
     prefs.setString("lat", position.latitude.toString());
     prefs.setString("long", position.longitude.toString());
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) =>
-    //           KeywordServicePage(title: _keywordController.text)),
-    // );
+     Navigator.push(
+       context,
+       MaterialPageRoute(
+           builder: (context) =>
+               KeywordServicePage(title: _keywordController.text)),
+     );
   }
 
   void _launchMaps() {
