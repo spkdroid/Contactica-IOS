@@ -17,6 +17,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'AddItemPage.dart';
+import 'PromoPage.dart';
 import 'ServicePage.dart';
 
 class MenuPage extends StatefulWidget {
@@ -425,10 +426,10 @@ class _MenuPageState extends State<MenuPage> {
         aspectRatio: 2.62 / 3,
         child: InkWell(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => HomePage(image)),
-            // );
+            Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => HomePage(image)),
+            );
           },
           child: (image.image_url != null)
               ? Container(

@@ -9,11 +9,12 @@
 //
 // ![A screenshot of the Scaffold widget with a bottom navigation bar and docked floating action button](https://flutter.github.io/assets-for-api-docs/assets/material/scaffold_bottom_app_bar.png)
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../animation/FadeAnimation.dart';
 import '../model/Promotion.dart';
 import '../model/ServiceObject.dart';
 import '../page/ServiceInfoPage.dart';
-import 'package:flutter/material.dart';
 
 class PromoPageWidget extends StatefulWidget {
   PromoPageWidget({Key key, this.title}) : super(key: key);
