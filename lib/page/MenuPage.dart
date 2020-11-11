@@ -7,7 +7,7 @@ import '../model/Promotion.dart';
 import '../model/Service.dart';
 //import 'package:contactica_app/page/KeywordServicePage.dart';
 import '../page/LoginPage.dart';
-//import '../page/PromoPage.dart';
+import '../page/PromoPage.dart';
 //import 'package:contactica_app/page/ServiceMapPage.dart';
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -426,10 +426,11 @@ class _MenuPageState extends State<MenuPage> {
         aspectRatio: 2.62 / 3,
         child: InkWell(
           onTap: () {
-            Navigator.push(
+
+             Navigator.push(
                context,
                MaterialPageRoute(builder: (context) => HomePage(image)),
-            );
+             );
           },
           child: (image.image_url != null)
               ? Container(
