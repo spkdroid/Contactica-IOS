@@ -5,7 +5,7 @@ import 'package:async/async.dart';
 import '../model/MenuPageObj.dart';
 import '../model/Promotion.dart';
 import '../model/Service.dart';
-//import 'package:contactica_app/page/KeywordServicePage.dart';
+import '../page/KeywordServicePage.dart';
 import '../page/LoginPage.dart';
 import '../page/PromoPage.dart';
 //import 'package:contactica_app/page/ServiceMapPage.dart';
@@ -426,11 +426,10 @@ class _MenuPageState extends State<MenuPage> {
         aspectRatio: 2.62 / 3,
         child: InkWell(
           onTap: () {
-
-             Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => HomePage(image)),
-             );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage(image)),
+            );
           },
           child: (image.image_url != null)
               ? Container(
@@ -571,11 +570,11 @@ class _MenuPageState extends State<MenuPage> {
     prefs.setString("long", position.longitude.toString());
 
     Navigator.push(
-       context,
-       MaterialPageRoute(
-           builder: (context) =>
-               KeywordServicePage(title: _keywordController.text)),
-     );
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              KeywordServicePage(title: _keywordController.text)),
+    );
   }
 
   void _launchMaps() {
