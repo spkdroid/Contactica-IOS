@@ -16,7 +16,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'AddItemPage.dart';
+import 'AddItemPage.dart';
 import 'PromoPage.dart';
 import 'ServicePage.dart';
 
@@ -129,13 +129,13 @@ class _MenuPageState extends State<MenuPage> {
                                   child: IconButton(
                                     icon: Icon(Icons.plus_one),
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           AddItemPageWidget(
-                                      //               title: "Sell Service")),
-                                      // );
+                                      Navigator.push(
+                                         context,
+                                         MaterialPageRoute(
+                                             builder: (context) =>
+                                                 AddItemPageWidget(
+                                                     title: "Sell Service")),
+                                       );
                                     },
                                     color: Colors.white,
                                     iconSize: 30.0,
