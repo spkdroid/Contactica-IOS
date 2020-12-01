@@ -41,6 +41,11 @@ dependencies:
   argon_buttons_flutter: ^1.0.2
   flutter_spinkit: ^4.1.2+1
   url_launcher: any
+  flutter_svg: ^0.18.0
+
+dependency_overrides:
+  image: last_version
+  xml: last_version
 
 dev_dependencies:
   flutter_test:
