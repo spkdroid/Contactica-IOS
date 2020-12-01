@@ -570,12 +570,12 @@ class _MenuPageState extends State<MenuPage> {
     prefs.setString("lat", position.latitude.toString());
     prefs.setString("long", position.longitude.toString());
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) =>
-    //           KeywordServicePage(title: _keywordController.text)),
-    // );
+    Navigator.push(
+       context,
+       MaterialPageRoute(
+           builder: (context) =>
+               KeywordServicePage(title: _keywordController.text)),
+     );
   }
 
   void _launchMaps() {
