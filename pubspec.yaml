@@ -44,8 +44,8 @@ dependencies:
   flutter_svg: ^0.18.0
 
 dependency_overrides:
-  image: last_version
-  xml: last_version
+  image: any
+  xml: any
 
 dev_dependencies:
   flutter_test:
