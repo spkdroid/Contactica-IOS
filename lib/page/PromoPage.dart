@@ -83,6 +83,11 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.of(context).pop(),
+      )),
       body: PageView(
         controller: _pageController,
         children: <Widget>[
