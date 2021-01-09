@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/page/MenuPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'page/LoginPage.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
         ),
         home: SplashScreen() //LoginPage(title: 'Login'),
-    );
+        );
   }
 }
 
@@ -42,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
       Duration(seconds: 5),
-          () => {
+      () => {
         _generateRoute().then((value) {
           print("completed");
         }, onError: (error) {
@@ -129,7 +130,13 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(builder: (context) => LoginPage(title: 'Login')),
       );
     } else {
-      // TODO: Need to implement this in when menu page added
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MenuPage(
+                  title: 'Welcome',
+                )),
+      );
     }
   }
 }

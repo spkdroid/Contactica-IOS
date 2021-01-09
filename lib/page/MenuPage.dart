@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:async/async.dart';
+import 'package:flutter_app/page/SellItemPage.dart';
 import '../model/MenuPageObj.dart';
 import '../model/Promotion.dart';
 import '../model/Service.dart';
@@ -129,13 +130,12 @@ class _MenuPageState extends State<MenuPage> {
                                   child: IconButton(
                                     icon: Icon(Icons.plus_one),
                                     onPressed: () {
-                                      /*       Navigator.push(
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                AddItemPageWidget(
-                                                    title: "Sell Service")),
-                                      ); */
+                                                SellItemPage()),
+                                      );
                                     },
                                     color: Colors.white,
                                     iconSize: 30.0,
