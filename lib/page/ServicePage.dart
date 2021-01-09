@@ -4,11 +4,12 @@ import 'dart:convert';
 import '../animation/fab/speed_dial.dart';
 import '../animation/fab/speed_dial_child.dart';
 import '../model/ServiceObject.dart';
-//import '../page/ServiceInfoPage.dart';
+import '../page/ServiceInfoPage.dart';
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'SettingsPage.dart';
 
 //import 'SettingsPage.dart';
 
@@ -108,13 +109,13 @@ class _ServicePageState extends State<ServicePage> {
                   ),
                   trailing: new Text(data[i].getType()),
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ServiceInfoPage(
-                    //               serviceData: data[i],
-                    //             )) //ServiceItemPage(serviceData: data[i])),
-                    //     );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ServiceInfoPage(
+                                  serviceData: data[i],
+                                )) //ServiceItemPage(serviceData: data[i])),
+                        );
                   },
                 );
               })),
@@ -146,12 +147,12 @@ class _ServicePageState extends State<ServicePage> {
               label: 'Preference',
               labelStyle: TextStyle(fontSize: 18.0),
               onTap: () => {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) =>
-                    //             SettingsPage() //ServiceItemPage(serviceData: data[i])),
-                    //         ))
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SettingsPage() //ServiceItemPage(serviceData: data[i])),
+                            ))
                   }),
         ],
       ),
