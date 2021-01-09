@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import '../utils/Constants.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:async/async.dart';
 
 class SellItemPage extends StatefulWidget {
   @override
@@ -23,6 +23,11 @@ class _SellItemScreenState extends State<SellItemPage> {
   File _image;
 
   final picker = ImagePicker();
+
+  String _serviceName;
+  String _serviceDescription;
+  String _serviceContact;
+  String _serviceType;
 
   Future getImage() async {
     var image = await picker.getImage(source: ImageSource.gallery);
@@ -118,11 +123,46 @@ class _SellItemScreenState extends State<SellItemPage> {
                         keyboardType: TextInputType.text,
                         // Use email input type for emails.
                         decoration: new InputDecoration(
-                          hintText: 'User Name',
-                          labelText: 'Enter your user name',
+                          hintText: 'Service Name',
+                          labelText: 'Enter the service name',
                           icon: new Icon(Icons.person),
                         ))),
                 new Container(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: new TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        // Use email input type for emails.
+                        decoration: new InputDecoration(
+                          hintText: 'Service Description',
+                          labelText: 'Enter the service description',
+                          icon: new Icon(Icons.person),
+                        ))),
+                new Container(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: new TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        // Use email input type for emails.
+                        decoration: new InputDecoration(
+                          hintText: 'Service Contact',
+                          labelText: 'Enter Contact number or Email Address',
+                          icon: new Icon(Icons.person),
+                        ))),
+                new Container(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: new TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        // Use email input type for emails.
+                        decoration: new InputDecoration(
+                          hintText: 'Service Type',
+                          labelText:
+                              'Please pick the service type from the dropdown',
+                          icon: new Icon(Icons.person),
+                        ))),
+
+                /*  new Container(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: new TextFormField(
                         focusNode: _emailFocusNode,
@@ -156,7 +196,7 @@ class _SellItemScreenState extends State<SellItemPage> {
                           hintText: 'Confirm Password',
                           labelText: 'Enter your confirm password',
                           icon: new Icon(Icons.lock))),
-                ),
+                ), */
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -256,5 +296,24 @@ class _SellItemScreenState extends State<SellItemPage> {
           textColor: Colors.white,
           fontSize: 14.0);
     }
+  }
+
+  Future<StreamedResponse> upload(File imageFile, var accesstoken) async {
+    var stream = new ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var length = await imageFile.length();
+    var uploadURL = Constants.API_URL + "/api/v1/item/upload_images";
+    var uri = Uri.parse(uploadURL);
+    var request = new MultipartRequest("POST", uri);
+    var multipartFile = new MultipartFile('image_file', stream, length,
+        filename: imageFile.path);
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'authorization': 'Bearer ' + accesstoken
+    };
+    request.headers.addAll(headers);
+    request.files.add(multipartFile);
+    var response = await request.send();
+    return response;
   }
 }
