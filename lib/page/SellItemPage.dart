@@ -1,11 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_app/model/ServiceObject.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:async/async.dart';
+
+import 'ServiceInfoPage.dart';
 
 class SellItemPage extends StatefulWidget {
   @override
@@ -13,14 +19,16 @@ class SellItemPage extends StatefulWidget {
 }
 
 class _SellItemScreenState extends State<SellItemPage> {
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final _servicenameController = TextEditingController();
+  final _servicedescriptionController = TextEditingController();
+  final _servicecontactController = TextEditingController();
+  final _servicetypeController = TextEditingController();
 
   FocusNode _emailFocusNode = FocusNode();
 
   File _image;
+
+  var _image_url;
 
   final picker = ImagePicker();
 
@@ -119,7 +127,7 @@ class _SellItemScreenState extends State<SellItemPage> {
                 new Container(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: new TextFormField(
-                        controller: _usernameController,
+                        controller: _servicenameController,
                         keyboardType: TextInputType.text,
                         // Use email input type for emails.
                         decoration: new InputDecoration(
@@ -130,73 +138,38 @@ class _SellItemScreenState extends State<SellItemPage> {
                 new Container(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: new TextFormField(
-                        controller: _usernameController,
-                        keyboardType: TextInputType.text,
+                        controller: _servicedescriptionController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 10,
                         // Use email input type for emails.
                         decoration: new InputDecoration(
                           hintText: 'Service Description',
                           labelText: 'Enter the service description',
-                          icon: new Icon(Icons.person),
+                          icon: new Icon(Icons.info),
                         ))),
                 new Container(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: new TextFormField(
-                        controller: _usernameController,
+                        controller: _servicecontactController,
                         keyboardType: TextInputType.text,
                         // Use email input type for emails.
                         decoration: new InputDecoration(
                           hintText: 'Service Contact',
                           labelText: 'Enter Contact number or Email Address',
-                          icon: new Icon(Icons.person),
+                          icon: new Icon(Icons.contact_page),
                         ))),
                 new Container(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: new TextFormField(
-                        controller: _usernameController,
+                        controller: _servicetypeController,
                         keyboardType: TextInputType.text,
                         // Use email input type for emails.
                         decoration: new InputDecoration(
                           hintText: 'Service Type',
                           labelText:
                               'Please pick the service type from the dropdown',
-                          icon: new Icon(Icons.person),
+                          icon: new Icon(Icons.book),
                         ))),
-
-                /*  new Container(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: new TextFormField(
-                        focusNode: _emailFocusNode,
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        // Use email input type for emails.
-                        validator: (_emailController) =>
-                            EmailValidator.validate(_emailController)
-                                ? null
-                                : "Invalid email address",
-                        decoration: new InputDecoration(
-                            hintText: 'you@example.com',
-                            labelText: 'E-mail Address',
-                            icon: new Icon(Icons.email)))),
-                new Container(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: new TextFormField(
-                      controller: _passwordController,
-                      obscureText: true, // Use secure text for passwords.
-                      decoration: new InputDecoration(
-                          hintText: 'Password',
-                          labelText: 'Enter your password',
-                          icon: new Icon(Icons.lock))),
-                ),
-                new Container(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: new TextFormField(
-                      obscureText: true, // Use secure text for passwords.
-                      controller: _confirmPasswordController,
-                      decoration: new InputDecoration(
-                          hintText: 'Confirm Password',
-                          labelText: 'Enter your confirm password',
-                          icon: new Icon(Icons.lock))),
-                ), */
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -207,10 +180,10 @@ class _SellItemScreenState extends State<SellItemPage> {
                           horizontal: 20.0, vertical: 40.0),
                       child: new RaisedButton(
                         child: new Text(
-                          'Register',
+                          'Add Service',
                           style: new TextStyle(color: Colors.white),
                         ),
-                        onPressed: () => _performLogin(),
+                        onPressed: () => null,
                         color: Colors.redAccent,
                       ),
                     ),
@@ -222,80 +195,139 @@ class _SellItemScreenState extends State<SellItemPage> {
     );
   }
 
-  _performLogin() async {
-    if (_usernameController.text.length > 0 &&
-        _passwordController.text.length > 0 &&
-        _emailController.text.length > 0) {
-      if (_passwordController.text == _confirmPasswordController.text) {
-        if (RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-            .hasMatch(_emailController.text)) {
-          await _makePostRequest(_usernameController.text,
-              _passwordController.text, _emailController.text);
-        } else {
-          Fluttertoast.showToast(msg: "Invalid Email address");
-        }
-      } else {
-        Fluttertoast.showToast(
-            msg: "Password mismatch",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 14.0);
-      }
-    } else {
-      Fluttertoast.showToast(
-          msg: "Field error",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 14.0);
-    }
+  Future getCredential() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var userToken = sharedPreferences.getString('access_token');
+    return userToken;
   }
 
-  _makePostRequest(String uname, String pass, String email) async {
-    var url = Constants.API_URL + "/api/v1/users/";
+  Future<Response> requestMethod() async {
+    //startLoading();
 
-// Phone number need to added
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Please wait"),
+            ],
+          ),
+        );
+      },
+    );
 
-    var response = await post(url, body: {
-      "recaptcha_key": "secret_key",
-      "username": uname.toString(),
-      "password": pass.toString(),
-      "email": email,
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.latitude);
+    print(position.longitude);
+    prefs.setString("lat", position.latitude.toString());
+    prefs.setString("long", position.longitude.toString());
+
+    var streamResponse = await upload(_image, prefs.getString('access_token'));
+
+    var serviceName = _servicenameController.text;
+    var serviceDesc = _servicedescriptionController.text;
+    var serviceContact = _servicecontactController.text;
+    var accesstoken = prefs.getString('access_token');
+    var userId = prefs.getString('user_id');
+    final respStr = await streamResponse.stream.bytesToString();
+
+    var usermap = jsonDecode(respStr);
+
+    var url = Constants.API_URL + "/api/v1/item/user/" + userId.toString();
+
+    setState(() {
+      _image_url = usermap["url"];
     });
 
-    print(response.statusCode);
+    var lat = prefs.get('lat').toString();
+    var log = prefs.get('long').toString();
+
+    //  if (title == "Sell Service") title = "food";
+
+    print(_serviceName);
+    print(_serviceDescription);
+    print(_serviceType);
+    print(_serviceContact);
+
+    var body = json.encode({
+      "title": _serviceName,
+      "description": _serviceDescription,
+      "category": _serviceType,
+      "type": 0,
+      "image_url": _image_url,
+      "contact_infor": _serviceContact,
+      "latitude": lat,
+      "longitude": log
+    });
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'authorization': 'Bearer ' + accesstoken
+    };
+
+    final response = await post(url, body: body, headers: headers);
+    final responseJson = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "Registration Completed",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 14.0);
+      Navigator.of(context).pop();
 
-      // pop up twice to jump to the login page
-      var count = 0;
-      Navigator.popUntil(context, (route) {
-        return count++ == 2;
-      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ServiceInfoPage(
+                serviceData: ServiceObject(
+                    title: _serviceName,
+                    description: _serviceDescription,
+                    image_url: _image_url,
+                    contact: _serviceContact,
+                    type: "3"))),
+      );
+
+      /*
+       showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Success"),
+              content: new Text("The service has been added to Contactica"),
+              actions: <Widget>[
+                new FlatButton(
+                    onPressed: () {
+                      var count = 0;
+                      Navigator.popUntil(context, (route) {
+                       return count++ == 2;
+                      });
+                    },
+                    child: new Text("Ok"))
+              ],
+            );
+          }); */
     } else {
-      Fluttertoast.showToast(
-          msg: "Registration Failed",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 14.0);
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Alert"),
+              content: new Text("There has been a problem with the request"),
+              actions: <Widget>[
+                new FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: new Text("Ok"))
+              ],
+            );
+          });
     }
+    return response;
   }
 
   Future<StreamedResponse> upload(File imageFile, var accesstoken) async {
