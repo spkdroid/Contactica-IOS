@@ -183,7 +183,7 @@ class _SellItemScreenState extends State<SellItemPage> {
                           'Add Service',
                           style: new TextStyle(color: Colors.white),
                         ),
-                        onPressed: () => null,
+                        onPressed: () => requestMethod(),
                         color: Colors.redAccent,
                       ),
                     ),
@@ -231,8 +231,8 @@ class _SellItemScreenState extends State<SellItemPage> {
 
     var streamResponse = await upload(_image, prefs.getString('access_token'));
 
-    var serviceName = _servicenameController.text;
-    var serviceDesc = _servicedescriptionController.text;
+    var _serviceName = _servicenameController.text;
+    var _serviceDesc = _servicedescriptionController.text;
     var serviceContact = _servicecontactController.text;
     var accesstoken = prefs.getString('access_token');
     var userId = prefs.getString('user_id');
