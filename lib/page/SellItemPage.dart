@@ -4,13 +4,11 @@ import 'dart:io';
 import 'package:flutter_app/model/ServiceObject.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:async/async.dart';
-
 import 'ServiceInfoPage.dart';
 
 class SellItemPage extends StatefulWidget {
@@ -233,7 +231,8 @@ class _SellItemScreenState extends State<SellItemPage> {
 
     var _serviceName = _servicenameController.text;
     var _serviceDesc = _servicedescriptionController.text;
-    var serviceContact = _servicecontactController.text;
+    var _serviceContact = _servicecontactController.text;
+    var _serviceType = _servicetypeController.text;
     var accesstoken = prefs.getString('access_token');
     var userId = prefs.getString('user_id');
     final respStr = await streamResponse.stream.bytesToString();
@@ -252,13 +251,13 @@ class _SellItemScreenState extends State<SellItemPage> {
     //  if (title == "Sell Service") title = "food";
 
     print(_serviceName);
-    print(_serviceDescription);
-    print(_serviceType);
+    print(_serviceDesc);
+    print(_serviceContact);
     print(_serviceContact);
 
     var body = json.encode({
       "title": _serviceName,
-      "description": _serviceDescription,
+      "description": _serviceDesc,
       "category": _serviceType,
       "type": 0,
       "image_url": _image_url,
@@ -266,6 +265,8 @@ class _SellItemScreenState extends State<SellItemPage> {
       "latitude": lat,
       "longitude": log
     });
+
+    print(body);
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
