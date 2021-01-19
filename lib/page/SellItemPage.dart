@@ -276,6 +276,8 @@ class _SellItemScreenState extends State<SellItemPage> {
     final response = await post(url, body: body, headers: headers);
     final responseJson = json.decode(response.body);
 
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       Navigator.of(context).pop();
 
@@ -285,7 +287,7 @@ class _SellItemScreenState extends State<SellItemPage> {
             builder: (context) => ServiceInfoPage(
                 serviceData: ServiceObject(
                     title: _serviceName,
-                    description: _serviceDescription,
+                    description: _serviceDesc,
                     image_url: _image_url,
                     contact: _serviceContact,
                     type: "3"))),
