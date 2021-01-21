@@ -6,7 +6,6 @@ import 'package:flutter_app/utils/Constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'RegistrationPage.dart';
 import 'OnboardingScreen.dart';
 import 'ResetPasswordPage.dart';
 
@@ -35,13 +34,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-
     final emailField = TextFormField(
       controller: _usernameController,
       obscureText: false,
@@ -71,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: LoginService,
+        onPressed: loginService,
         child: Text("Login",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -167,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
             )));
   }
 
-  LoginService() async {
+  loginService() async {
     var userName = _usernameController.text;
     var passCode = _passwordController.text;
 
@@ -181,12 +173,47 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 new CircularProgressIndicator(),
+                SizedBox(
+                  height: 125.0,
+                  child: Image.asset(
+                    "assets/logo.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
                 new Text("Performing Login"),
               ],
             ),
           );
         },
       );
+
+      /*
+      SweetSheet().show(
+        context: context,
+        description: Text(
+          'Place your order. Please confirm the placement of your order : Iphone X 128GB',
+          style: TextStyle(color: Color(0xff2D3748)),
+        ),
+        color: CustomSheetColor(
+          main: Colors.white,
+          accent: Color(0xff5A67D8),
+          icon: Color(0xff5A67D8),
+        ),
+        icon: Icons.local_shipping,
+        positive: SweetSheetAction(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          title: 'CONTINUE',
+        ),
+        negative: SweetSheetAction(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          title: 'CANCEL',
+        ),
+      );
+      */
 
       await _makePostRequest(userName, passCode);
     }
