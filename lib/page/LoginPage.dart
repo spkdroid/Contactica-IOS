@@ -6,7 +6,7 @@ import 'package:flutter_app/utils/Constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'RegistrationPage.dart';
+import 'RegistrationPage.dart';
 import 'OnboardingScreen.dart';
 import 'ResetPasswordPage.dart';
 
