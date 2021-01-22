@@ -5,6 +5,7 @@ import 'package:flutter_app/model/DropDownFormField.dart';
 import 'package:flutter_app/model/ServiceObject.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sweetsheet/sweetsheet.dart';
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -220,143 +221,152 @@ class _SellItemScreenState extends State<SellItemPage> {
   }
 
   Future<Response> requestMethod() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(
-                height: 125.0,
-                child: Image.asset(
-                  "assets/logo.png",
-                  fit: BoxFit.contain,
-                ),
-              ),
-              new CircularProgressIndicator(),
-              new Text("Please wait"),
-            ],
-          ),
-        );
-      },
-    );
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude);
-    print(position.longitude);
-    prefs.setString("lat", position.latitude.toString());
-    prefs.setString("long", position.longitude.toString());
-
-    var streamResponse = await upload(_image, prefs.getString('access_token'));
-
+    // All the variables for adding the service information
     var _serviceName = _servicenameController.text;
     var _serviceDesc = _servicedescriptionController.text;
     var _serviceContact = _servicecontactController.text;
+    // _image
 
     print(_serviceName);
     print(_serviceDesc);
     print(_serviceContact);
     print(_serviceType);
+    //  print(_image.absolute.path);
 
-    //var _serviceType = _serviceType;
-    var accesstoken = prefs.getString('access_token');
-    var userId = prefs.getString('user_id');
-    final respStr = await streamResponse.stream.bytesToString();
-
-    var usermap = jsonDecode(respStr);
-
-    var url = Constants.API_URL + "/api/v1/item/user/" + userId.toString();
-
-    setState(() {
-      _image_url = usermap["url"];
-    });
-
-    var lat = prefs.get('lat').toString();
-    var log = prefs.get('long').toString();
-
-    //  if (title == "Sell Service") title = "food";
-
-    var body = json.encode({
-      "title": _serviceName,
-      "description": _serviceDesc,
-      "category": _serviceType,
-      "type": 0,
-      "image_url": _image_url,
-      "contact_infor": _serviceContact,
-      "latitude": lat,
-      "longitude": log
-    });
-
-    print(body);
-
-    Map<String, String> headers = {
-      'Content-type': 'application/json',
-      'authorization': 'Bearer ' + accesstoken
-    };
-
-    final response = await post(url, body: body, headers: headers);
-    final responseJson = json.decode(response.body);
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      Navigator.of(context).pop();
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ServiceInfoPage(
-                serviceData: ServiceObject(
-                    title: _serviceName,
-                    description: _serviceDesc,
-                    image_url: _image_url,
-                    contact: _serviceContact,
-                    type: "3"))),
+    if (_serviceName.isNotEmpty &&
+        _serviceDesc.isNotEmpty &&
+        _serviceContact.isNotEmpty &&
+        _serviceType != null &&
+        _image != null) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(
+                  height: 125.0,
+                  child: Image.asset(
+                    "assets/logo.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                new CircularProgressIndicator(),
+                new Text("Please wait"),
+              ],
+            ),
+          );
+        },
       );
 
-      /*
-       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: new Text("Success"),
-              content: new Text("The service has been added to Contactica"),
-              actions: <Widget>[
-                new FlatButton(
-                    onPressed: () {
-                      var count = 0;
-                      Navigator.popUntil(context, (route) {
-                       return count++ == 2;
-                      });
-                    },
-                    child: new Text("Ok"))
-              ],
-            );
-          }); */
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      Position position = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      print(position.latitude);
+      print(position.longitude);
+      prefs.setString("lat", position.latitude.toString());
+      prefs.setString("long", position.longitude.toString());
+
+      var streamResponse =
+          await upload(_image, prefs.getString('access_token'));
+
+      //var _serviceType = _serviceType;
+      var accesstoken = prefs.getString('access_token');
+      var userId = prefs.getString('user_id');
+      final respStr = await streamResponse.stream.bytesToString();
+
+      var usermap = jsonDecode(respStr);
+
+      var url = Constants.API_URL + "/api/v1/item/user/" + userId.toString();
+
+      setState(() {
+        _image_url = usermap["url"];
+      });
+
+      var lat = prefs.get('lat').toString();
+      var log = prefs.get('long').toString();
+
+      //  if (title == "Sell Service") title = "food";
+
+      var body = json.encode({
+        "title": _serviceName,
+        "description": _serviceDesc,
+        "category": _serviceType,
+        "type": 0,
+        "image_url": _image_url,
+        "contact_infor": _serviceContact,
+        "latitude": lat,
+        "longitude": log
+      });
+
+      print(body);
+
+      Map<String, String> headers = {
+        'Content-type': 'application/json',
+        'authorization': 'Bearer ' + accesstoken
+      };
+
+      final response = await post(url, body: body, headers: headers);
+      final responseJson = json.decode(response.body);
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        Navigator.of(context).pop();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ServiceInfoPage(
+                  serviceData: ServiceObject(
+                      title: _serviceName,
+                      description: _serviceDesc,
+                      image_url: _image_url,
+                      contact: _serviceContact,
+                      type: "3"))),
+        );
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text("Alert"),
+                content: new Text("There has been a problem with the request"),
+                actions: <Widget>[
+                  new FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: new Text("Ok"))
+                ],
+              );
+            });
+      }
+      return response;
     } else {
-      Navigator.of(context).pop();
-      showDialog(
+      new SweetSheet().show(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: new Text("Alert"),
-              content: new Text("There has been a problem with the request"),
-              actions: <Widget>[
-                new FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: new Text("Ok"))
-              ],
-            );
-          });
+          description: Text(
+            'Form Issue: Please correct your form information to add your service',
+            style: TextStyle(color: Color(0xff2D3748)),
+          ),
+          color: CustomSheetColor(
+            main: Colors.white,
+            accent: Color(0xfffd5c63), //Color(0xff5A67D8),
+            icon: Color(0xfffd5c63),
+          ),
+          icon: Icons.local_shipping,
+          positive: SweetSheetAction(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            title: 'OK',
+          ));
     }
-    return response;
   }
 
   Future<StreamedResponse> upload(File imageFile, var accesstoken) async {

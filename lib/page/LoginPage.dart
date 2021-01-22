@@ -186,35 +186,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
-
-      /*
-      SweetSheet().show(
-        context: context,
-        description: Text(
-          'Place your order. Please confirm the placement of your order : Iphone X 128GB',
-          style: TextStyle(color: Color(0xff2D3748)),
-        ),
-        color: CustomSheetColor(
-          main: Colors.white,
-          accent: Color(0xff5A67D8),
-          icon: Color(0xff5A67D8),
-        ),
-        icon: Icons.local_shipping,
-        positive: SweetSheetAction(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          title: 'CONTINUE',
-        ),
-        negative: SweetSheetAction(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          title: 'CANCEL',
-        ),
-      );
-      */
-
       await _makePostRequest(userName, passCode);
     }
   }
