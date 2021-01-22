@@ -1,14 +1,3 @@
-// Flutter code sample for
-
-// This example shows a [Scaffold] with an [AppBar], a [BottomAppBar] and a
-// [FloatingActionButton]. The [body] is a [Text] placed in a [Center] in order
-// to center the text within the [Scaffold]. The [FloatingActionButton] is
-// centered and docked within the [BottomAppBar] using
-// [FloatingActionButtonLocation.centerDocked]. The [FloatingActionButton] is
-// connected to a callback that increments a counter.
-//
-// ![A screenshot of the Scaffold widget with a bottom navigation bar and docked floating action button](https://flutter.github.io/assets-for-api-docs/assets/material/scaffold_bottom_app_bar.png)
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../animation/FadeAnimation.dart';
@@ -35,8 +24,11 @@ class _PromoPageWidgetState extends State<PromoPageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Promotional Page"),
-        ),
+            title: Text("Promotional Page"),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            )),
         body: new ListView(
           children: <Widget>[HomePage(null)],
         ));
@@ -83,11 +75,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: new IconButton(
-        icon: new Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.of(context).pop(),
-      )),
       body: PageView(
         controller: _pageController,
         children: <Widget>[
@@ -119,25 +106,10 @@ class _HomePageState extends State<HomePage>
                 SizedBox(
                   height: 40,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: <Widget>[
-                    FadeAnimation(
-                        2,
-                        Text(
-                          page.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
-                        )),
-                    Text(
-                      '/' + totalPage.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    )
-                  ],
+                new IconButton(
+                  icon: new Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop(),
+                  iconSize: 50,
                 ),
                 Expanded(
                   child: Column(
@@ -157,61 +129,6 @@ class _HomePageState extends State<HomePage>
                       SizedBox(
                         height: 20,
                       ),
-                      FadeAnimation(
-                          1.5,
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size: 15,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size: 15,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size: 15,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size: 15,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                  size: 15,
-                                ),
-                              ),
-                              Text(
-                                '4.0',
-                                style: TextStyle(color: Colors.white70),
-                              ),
-                              Text(
-                                '(2300)',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              )
-                            ],
-                          )),
                       SizedBox(
                         height: 20,
                       ),
@@ -266,7 +183,6 @@ class _HomePageState extends State<HomePage>
         MaterialPageRoute(
             builder: (context) => ServiceInfoPage(
                   serviceData: _s,
-                )) //ServiceItemPage(serviceData: data[i])),
-        );
+                )));
   }
 }
