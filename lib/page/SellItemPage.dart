@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app/model/DropDownFormField.dart';
 import 'package:flutter_app/model/ServiceObject.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,9 +21,6 @@ class _SellItemScreenState extends State<SellItemPage> {
   final _servicenameController = TextEditingController();
   final _servicedescriptionController = TextEditingController();
   final _servicecontactController = TextEditingController();
-  final _servicetypeController = TextEditingController();
-
-  FocusNode _emailFocusNode = FocusNode();
 
   File _image;
 
@@ -157,17 +155,39 @@ class _SellItemScreenState extends State<SellItemPage> {
                           icon: new Icon(Icons.contact_page),
                         ))),
                 new Container(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: new TextFormField(
-                        controller: _servicetypeController,
-                        keyboardType: TextInputType.text,
-                        // Use email input type for emails.
-                        decoration: new InputDecoration(
-                          hintText: 'Service Type',
-                          labelText:
-                              'Please pick the service type from the dropdown',
-                          icon: new Icon(Icons.book),
-                        ))),
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: DropDownFormField(
+                    titleText: 'Service Type',
+                    hintText: 'Pick your service',
+                    value: _serviceType,
+                    onSaved: (value) {
+                      setState(() {
+                        _serviceType = value;
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _serviceType = value;
+                      });
+                    },
+                    dataSource: [
+                      {
+                        "display": "Food",
+                        "value": "food",
+                      },
+                      {
+                        "display": "Snow Removal",
+                        "value": "snow_removal",
+                      },
+                      {
+                        "display": "Plumber",
+                        "value": "plumber",
+                      }
+                    ],
+                    textField: 'display',
+                    valueField: 'value',
+                  ),
+                ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -200,8 +220,6 @@ class _SellItemScreenState extends State<SellItemPage> {
   }
 
   Future<Response> requestMethod() async {
-    //startLoading();
-
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -210,6 +228,13 @@ class _SellItemScreenState extends State<SellItemPage> {
           child: new Row(
             mainAxisSize: MainAxisSize.max,
             children: [
+              SizedBox(
+                height: 125.0,
+                child: Image.asset(
+                  "assets/logo.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
               new CircularProgressIndicator(),
               new Text("Please wait"),
             ],
@@ -232,7 +257,13 @@ class _SellItemScreenState extends State<SellItemPage> {
     var _serviceName = _servicenameController.text;
     var _serviceDesc = _servicedescriptionController.text;
     var _serviceContact = _servicecontactController.text;
-    var _serviceType = _servicetypeController.text;
+
+    print(_serviceName);
+    print(_serviceDesc);
+    print(_serviceContact);
+    print(_serviceType);
+
+    //var _serviceType = _serviceType;
     var accesstoken = prefs.getString('access_token');
     var userId = prefs.getString('user_id');
     final respStr = await streamResponse.stream.bytesToString();
@@ -249,11 +280,6 @@ class _SellItemScreenState extends State<SellItemPage> {
     var log = prefs.get('long').toString();
 
     //  if (title == "Sell Service") title = "food";
-
-    print(_serviceName);
-    print(_serviceDesc);
-    print(_serviceContact);
-    print(_serviceContact);
 
     var body = json.encode({
       "title": _serviceName,
