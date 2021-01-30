@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter_app/page/SellItemPage.dart';
+import 'package:location_permissions/location_permissions.dart';
 import '../model/MenuPageObj.dart';
 import '../model/Promotion.dart';
 import '../model/Service.dart';
 import '../page/KeywordServicePage.dart';
 import '../page/LoginPage.dart';
 import '../page/PromoPage.dart';
-//import 'package:contactica_app/page/ServiceMapPage.dart';
 import '../utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +17,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'AddItemPage.dart';
 import 'PromoPage.dart';
 import 'ServicePage.dart';
 
@@ -95,24 +94,6 @@ class _MenuPageState extends State<MenuPage> {
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 15.0),
-                                /*
-                      GestureDetector(
-                          onTap: changeProfilePicture,
-                          child:
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 50.0,
-                            width: 50.0,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                border: Border.all(
-                                    color: Colors.white,
-                                    style: BorderStyle.solid,
-                                    width: 2.0),
-                                image: DecorationImage(
-                                    image: NetworkImage(profilePicture))),
-
-                          )),*/
                                 Container(
                                   alignment: Alignment.topLeft,
                                   child: IconButton(
@@ -341,18 +322,45 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   serviceTriggered(String s, BuildContext context) async {
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude);
-    print(position.longitude);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("lat", position.latitude.toString());
-    prefs.setString("long", position.longitude.toString());
+    try {
+      print("Hello");
+      // PermissionStatus permission = await LocationPermissions()
+      //     .requestPermissions()
+      //     .whenComplete(() => print("Hello"));
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ServicePage(title: s)),
-    );
+      Position position = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+      print("Hello World");
+      print(position.latitude.toString());
+      print(position.longitude.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("lat", position.latitude.toString());
+      prefs.setString("long", position.longitude.toString());
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ServicePage(title: s)),
+      );
+    } catch (err) {
+      try {
+        Position position = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+        print(position.latitude);
+        print(position.longitude);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("lat", position.latitude.toString());
+        prefs.setString("long", position.longitude.toString());
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ServicePage(title: s)),
+        );
+      } catch (error) {
+        print("Permission Denied");
+      }
+    }
   }
 
   Future getCredential() async {
