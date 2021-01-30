@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:async/async.dart';
+import 'package:flutter_app/page/LocationAccessScreen.dart';
 import 'package:flutter_app/page/SellItemPage.dart';
-import 'package:location_permissions/location_permissions.dart';
 import '../model/MenuPageObj.dart';
 import '../model/Promotion.dart';
 import '../model/Service.dart';
@@ -323,11 +323,6 @@ class _MenuPageState extends State<MenuPage> {
 
   serviceTriggered(String s, BuildContext context) async {
     try {
-      print("Hello");
-      // PermissionStatus permission = await LocationPermissions()
-      //     .requestPermissions()
-      //     .whenComplete(() => print("Hello"));
-
       Position position = await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
@@ -358,7 +353,10 @@ class _MenuPageState extends State<MenuPage> {
           MaterialPageRoute(builder: (context) => ServicePage(title: s)),
         );
       } catch (error) {
-        print("Permission Denied");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LocationAccessScreen()),
+        );
       }
     }
   }
