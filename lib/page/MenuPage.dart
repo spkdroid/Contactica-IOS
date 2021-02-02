@@ -324,7 +324,7 @@ class _MenuPageState extends State<MenuPage> {
   serviceTriggered(String s, BuildContext context) async {
     try {
       Position position = await Geolocator()
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
 
       print("Hello World");
       print(position.latitude.toString());
